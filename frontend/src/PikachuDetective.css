@@ -1,0 +1,220 @@
+
+.pikachu-stage {
+  --pikachu-yellow: #ffd94d;
+  position: relative;
+  display: grid;
+  min-width: 0;
+  justify-items: center;
+  align-content: center;
+  padding: 12px;
+  isolation: isolate;
+}
+
+.pikachu-aura {
+  position: absolute;
+  z-index: -1;
+  width: min(90%, 260px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, #f5c54230, #f5c54208 55%, transparent 72%);
+  animation: pikachu-aura 3s ease-in-out infinite alternate;
+}
+
+.pikachu-character {
+  width: min(100%, 280px);
+  overflow: visible;
+  filter: drop-shadow(0 15px 18px #00000022);
+  animation: pikachu-float 3s ease-in-out infinite;
+}
+
+.pikachu-ears {
+  transform-origin: 140px 100px;
+  animation: pikachu-ear-wiggle 3.2s ease-in-out infinite;
+}
+
+.pikachu-tail {
+  transform-origin: 200px 250px;
+  animation: pikachu-tail-wag 2.6s ease-in-out infinite;
+}
+
+.pikachu-blink {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pikachu-blink 4s infinite;
+}
+
+.pikachu-cheek {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pikachu-blush 2s ease-in-out infinite alternate;
+}
+
+.pikachu-brows,
+.pikachu-magnifier,
+.pikachu-sunglasses,
+.pikachu-folded-arms,
+.pikachu-search-spark,
+.pikachu-victory-spark {
+  display: none;
+}
+
+.pikachu-caption {
+  margin: 4px 0 0;
+  color: var(--accent, #f5c542);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.6px;
+  text-align: center;
+}
+
+.pikachu-idle .pikachu-character {
+  animation: pikachu-float 3s ease-in-out infinite;
+}
+
+.pikachu-investigating .pikachu-character {
+  animation: pikachu-search-body 1.5s ease-in-out infinite alternate;
+}
+
+.pikachu-investigating .pikachu-brows,
+.pikachu-investigating .pikachu-magnifier,
+.pikachu-success .pikachu-sunglasses,
+.pikachu-success .pikachu-folded-arms,
+.pikachu-investigating .pikachu-search-spark,
+.pikachu-success .pikachu-victory-spark {
+  display: block;
+}
+
+.pikachu-investigating .pikachu-blink {
+  animation-duration: 2.3s;
+}
+
+.pikachu-investigating .pikachu-magnifier {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: pikachu-glass-search 1.4s ease-in-out infinite alternate;
+}
+
+.pikachu-investigating .pikachu-ears {
+  animation: pikachu-ear-alert 1.2s ease-in-out infinite alternate;
+}
+
+.pikachu-investigating .pikachu-search-spark {
+  position: absolute;
+  top: 28%;
+  right: 12%;
+  color: #f5c542;
+  font-size: 25px;
+  animation: pikachu-search-glint 1s ease-in-out infinite alternate;
+}
+
+.pikachu-success .pikachu-character {
+  animation: pikachu-victory 700ms ease-out both, pikachu-proud 2.8s ease-in-out 700ms infinite;
+}
+
+.pikachu-success .pikachu-eyes,
+.pikachu-success .pikachu-blink {
+  display: none;
+}
+
+.pikachu-success .pikachu-sunglasses {
+  animation: pikachu-glasses-on 500ms ease-out both;
+}
+
+.pikachu-success .pikachu-arms {
+  display: none;
+}
+
+.pikachu-success .pikachu-victory-spark {
+  position: absolute;
+  top: 37%;
+  right: 22%;
+  color: #fff9c4;
+  font-size: 31px;
+  text-shadow: 0 0 12px #ffe66d;
+  animation: pikachu-glasses-flash 1.2s ease-in-out infinite;
+}
+
+.pikachu-success .pikachu-cheek {
+  animation: none;
+}
+
+@keyframes pikachu-float {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-8px) rotate(1deg); }
+}
+
+@keyframes pikachu-ear-wiggle {
+  0%, 75%, 100% { transform: rotate(0); }
+  82% { transform: rotate(-4deg); }
+  90% { transform: rotate(4deg); }
+}
+
+@keyframes pikachu-tail-wag {
+  0%, 100% { transform: rotate(0); }
+  50% { transform: rotate(8deg); }
+}
+
+@keyframes pikachu-blink {
+  0%, 42%, 46%, 82%, 86%, 100% { opacity: 0; }
+  44%, 84% { opacity: 1; }
+}
+
+@keyframes pikachu-blush {
+  from { opacity: .65; transform: scale(.94); }
+  to { opacity: 1; transform: scale(1.08); }
+}
+
+@keyframes pikachu-aura {
+  from { opacity: .5; transform: scale(.94); }
+  to { opacity: 1; transform: scale(1.06); }
+}
+
+@keyframes pikachu-search-body {
+  from { transform: translate(-4px, 1px) rotate(-2deg); }
+  to { transform: translate(5px, -3px) rotate(2deg); }
+}
+
+@keyframes pikachu-glass-search {
+  from { translate: -7px 3px; rotate: -9deg; }
+  to { translate: 5px -4px; rotate: 10deg; }
+}
+
+@keyframes pikachu-ear-alert {
+  from { rotate: -3deg; }
+  to { rotate: 4deg; }
+}
+
+@keyframes pikachu-search-glint {
+  from { opacity: .25; transform: scale(.7) rotate(0); }
+  to { opacity: 1; transform: scale(1.2) rotate(35deg); }
+}
+
+@keyframes pikachu-victory {
+  from { transform: translateY(12px) scale(.9); }
+  to { transform: translateY(0) scale(1); }
+}
+
+@keyframes pikachu-proud {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -4px; }
+}
+
+@keyframes pikachu-glasses-on {
+  from { opacity: 0; translate: 0 -18px; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+@keyframes pikachu-glasses-flash {
+  0%, 100% { opacity: .15; transform: scale(.75) rotate(-15deg); }
+  45% { opacity: 1; transform: scale(1.3) rotate(15deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pikachu-stage *,
+  .pikachu-stage *::before,
+  .pikachu-stage *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

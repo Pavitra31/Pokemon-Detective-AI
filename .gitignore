@@ -1,0 +1,38 @@
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Secrets and environment variables
+.env
+.env.*
+!.env.example
+
+# React / Node.js
+node_modules/
+frontend/node_modules/
+frontend/dist/
+
+# Model weights and large files
+*.pt
+*.pth
+*.onnx
+
+# Local datasets and generated data
+datasets/
+data/
+
+# Experiment backups and logs
+*.backup
+*.clean-backup
+*.before_*
+*.pre_*
+*.log
+
+# Editor and operating system
+.vscode/
+.DS_Store
+Thumbs.db

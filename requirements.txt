@@ -1,0 +1,10 @@
+
+Flask
+Flask-Cors
+requests
+Pillow
+python-dotenv
+torch
+torchvision
+scikit-learn
+pytest
