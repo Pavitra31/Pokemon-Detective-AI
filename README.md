@@ -1,41 +1,74 @@
-# Pokémon Detective AI
+# Pokémon Detective AI 🔎⚡
 
-An AI-powered Pokémon recognition web application built with **React, Flask, and PyTorch**. Upload a Pokémon image to receive a model prediction and explore Pokémon information through PokéAPI.
+**A Detective Pikachu-inspired Pokémon investigation experience powered by computer vision.**
 
-## Features
+Pokémon Detective AI lets you upload a Pokémon image, identify the most likely Pokémon using a trained **EfficientNet-B0** model, inspect its Pokédex profile, and explore a detective-themed interface with animated scanning and a color palette derived from the uploaded image.
 
-- Pokémon image upload and classification
-- Prediction confidence scores
-- Pokémon information retrieved from PokéAPI
-- Dominant image color detection
-- Pokémon details, stats, and abilities
-- React-based interface with animated interactions
-- Flask REST API
-- Input validation and API error handling
+
+
+## Highlights
+
+- **AI Image Classification:** Predicts a Pokémon class and returns a confidence score.
+- **Pokédex Investigation:** Retrieves types, abilities, dimensions, base stats, and artwork through PokéAPI.
+- **Image-Derived Colors:** Extracts dominant colors from the uploaded image for the visual theme.
+- **Detective-Inspired UI:** Animated scanning and reveal interactions.
+- **React + Flask Architecture:** A Vite-powered React frontend communicates with a Python Flask REST API.
+- **Validation and Error Handling:** Handles image requests and common API errors.
+
+## How It Works
+
+1. Upload an image of one Pokémon.
+2. Preprocess the image for the model.
+3. Run EfficientNet-B0 to predict a class and calculate confidence.
+4. Retrieve Pokédex information through PokéAPI.
+5. Extract dominant colors from the uploaded image.
+6. Present the result with Pokémon details and the detective-themed interface.
+
+```text
+Image upload
+    ↓
+Flask API validates the image
+    ↓
+PyTorch / EfficientNet-B0 prediction
+    ↓
+PokéAPI lookup + dominant-color extraction
+    ↓
+Pokémon profile + confidence + themed UI
+```
 
 ## Technology Stack
 
-**Frontend**
-- React
-- Vite
-- Tailwind CSS
-- Framer Motion
-- Lucide React
+| Area                 | Technology                            |
+| -------------------- | ------------------------------------- |
+| Frontend             | React, Vite, JavaScript, CSS          |
+| Backend              | Python, Flask, Flask-CORS             |
+| Image Classification | PyTorch, Torchvision, EfficientNet-B0 |
+| Image Handling       | Pillow                                |
+| Pokémon Data         | PokéAPI, Requests                     |
+| Testing              | pytest                                |
+| Version Control      | Git, GitHub                           |
 
-**Backend**
-- Python
-- Flask and Flask-CORS
-- PyTorch and Torchvision
-- Pillow
-- Requests
+The repository's `package.json` and `requirements.txt` are the source of truth for installed dependencies.
 
-**Model**
-- EfficientNet-B0
-- 1,012 Pokémon classes
-- 224 × 224 image input
+## Model and Dataset
 
-**External API**
-- [PokéAPI](https://pokeapi.co/)
+- **Architecture:** EfficientNet-B0
+- **Input Size:** 224 × 224 pixels
+- **Classes:** 1,012 Pokémon classes
+- **Dataset Images:** 59,534
+  - Training: 47,627
+  - Validation: 11,907
+
+### Recorded Validation Results
+
+| Metric         | Result |
+| -------------- | -----: |
+| Top-1 Accuracy | 62.96% |
+| Top-5 Accuracy | 78.37% |
+
+These figures are from the recorded five-epoch validation run. They do not guarantee correct identification for every image. Results can vary with image quality, background, pose, class imbalance, and similarity between Pokémon.
+
+**Model weights are not included in this repository.** The `.gitignore` excludes `.pth`, `.pt`, and `.onnx` files, so a compatible checkpoint must be obtained or generated separately before running prediction. Do not commit datasets, model checkpoints, credentials, or `.env` files.
 
 ## Project Structure
 
@@ -44,173 +77,110 @@ Pokemon-Detective-AI/
 ├── backend/
 │   ├── app.py
 │   └── services/
+│       ├── color_service.py
+│       ├── dataset.py
+│       ├── pokedex_service.py
 │       ├── prediction_service.py
-│       └── ...
+│       └── vision_model.py
 ├── frontend/
-│   ├── src/
 │   ├── public/
-│   └── package.json
+│   └── src/
+│       ├── App.jsx
+│       ├── App.css
+│       ├── PikachuDetective.jsx
+│       └── PikachuDetective.css
 ├── tests/
-├── models/
-│   └── pokemon_efficientnet_b0_1012_fulltrained.pth
-├── datasets/
 ├── requirements.txt
+├── .gitignore
 └── README.md
 ```
 
-The dataset and model weights are excluded from Git to avoid committing large files.
+## Run Locally
 
-## Prerequisites
+### Requirements
 
-- Python 3.10 or a compatible Python version
+- Python 3.12 or a compatible version for the installed dependencies
 - Node.js and npm
-- Git
-- A trained model checkpoint for image predictions
+- The trained model checkpoint expected by the backend (not included in Git)
 
-## Installation
+### 1. Set Up the Backend
 
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/YOUR_USERNAME/Pokemon-Detective-AI.git
-cd Pokemon-Detective-AI
-```
-
-Replace `YOUR_USERNAME` with your GitHub username and use your actual repository URL.
-
-### 2. Set up the Python backend
-
-Create and activate a virtual environment.
-
-**Windows PowerShell:**
+From the repository root:
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
 ```
 
-Install Python dependencies:
+Place a compatible checkpoint in the `models/` location expected by the model-loading code. The checkpoint is intentionally excluded from Git.
 
-```powershell
-python -m pip install -r requirements.txt
-```
-
-### 3. Add the trained model
-
-Create the `models` directory if it does not exist, then place the trained checkpoint at:
-
-```text
-models/pokemon_efficientnet_b0_1012_fulltrained.pth
-```
-
-The model checkpoint is not included in this repository. The prediction endpoint requires it to perform image classification.
-
-### 4. Install frontend dependencies
-
-Open a terminal in the project root and run:
-
-```powershell
-cd frontend
-npm install
-```
-
-## Running the Application
-
-Run the backend and frontend in separate terminals.
-
-### Backend
-
-From the project root, with the Python virtual environment activated:
+Start Flask from the repository root:
 
 ```powershell
 python -m backend.app
 ```
 
-The Flask backend should be available at:
+The API is expected at `http://127.0.0.1:5000`.
 
-```text
-http://127.0.0.1:5000
-```
+### 2. Set Up the Frontend
 
-### Frontend
-
-In another terminal:
+Open a second terminal:
 
 ```powershell
 cd frontend
+npm install
 npm run dev
 ```
 
-Open the local URL printed by Vite, normally:
+Open the local URL printed by Vite, usually `http://localhost:5173`.
 
-```text
-http://localhost:5173
-```
+### 3. Test the API
 
-## API Endpoints
-
-| Method | Endpoint | Purpose |
-|---|---|---|
-| GET | `/` | Backend root endpoint |
-| GET | `/api/health` | Health check |
-| GET | `/api/pokemon/<name>` | Retrieve Pokémon information |
-| POST | `/api/predict` | Predict a Pokémon from an uploaded image |
-
-For image prediction, send a multipart form request with the image under the field expected by the backend implementation.
-
-## Testing
-
-Run the API tests from the project root:
+The backend provides a prediction endpoint at `/api/predict` that accepts an image as multipart form data, and a Pokémon information endpoint at `/api/pokemon/<name>`. With the backend running:
 
 ```powershell
-python -m pytest tests/test_api.py -v
+Invoke-RestMethod http://127.0.0.1:5000/api/pokemon/pikachu
 ```
 
-Additional project validation scripts include:
+The prediction endpoint requires a compatible checkpoint. See `backend/app.py` for current route definitions and request format.
+
+## Tests
+
+Run the Python tests from the repository root:
 
 ```powershell
-python -m tests.test_dataset
-python -m tests.test_model
-python -m tests.test_prediction
+python -m pytest
 ```
 
-The prediction test requires the trained checkpoint and appropriate test image data.
+Some tests may require the model checkpoint or other local assets that are intentionally not tracked in Git.
 
-## Model and Dataset Notes
+## Current Scope and Limitations
 
-The training dataset manifest contains **59,534 images across 1,012 classes**, split into 47,627 training images and 11,907 validation images.
+- The current model performs **single-image Pokémon classification**; it is not a YOLO-style detector and does not draw bounding boxes around multiple Pokémon.
+- Confidence is a model score, not a guarantee of correctness.
+- PokéAPI access requires an internet connection.
+- Model weights and datasets are not included in the repository.
+- Complex backgrounds can affect dominant-color extraction.
 
-The full-trained checkpoint achieved the following validation results in the recorded five-epoch run:
+## Future Roadmap
 
-- **Top-1 accuracy:** 62.96%
-- **Top-5 accuracy:** 78.37%
+These extensions belong to the original project vision and should be considered planned until implemented and tested:
 
-These are validation results, not a guarantee of accuracy for every uploaded image. Performance may vary depending on image quality, background, pose, and similarity between Pokémon.
+- Camera capture in addition to image upload
+- Detection history
+- More robust foreground/background removal
+- Multiple-Pokémon detection with YOLO and bounding boxes
+- A lightweight MobileNetV3 model for comparison or lower-resource inference
+- Docker and Docker Compose packaging
+- GitHub Actions CI/CD
+- Cloud deployment, potentially using AWS for the frontend and backend
 
-Dataset files and model weights are excluded from version control. Ensure you have the required files locally before running model-dependent features.
+## Key Design Principle
 
-## Building the Frontend
+**The model identifies the Pokémon, PokéAPI supplies its facts, image-color extraction informs the palette, and React presents the investigation.**
 
-To create a production frontend build:
+## Acknowledgements
 
-```powershell
-cd frontend
-npm run build
-```
-
-To run the frontend linter:
-
-```powershell
-npm run lint
-```
-
-## Limitations
-
-- Predictions depend on the availability of the trained model checkpoint.
-- Prediction confidence is the model's score, not a guarantee that the prediction is correct.
-- Pokémon details depend on the external PokéAPI service.
-- The project is intended for educational and demonstration purposes.
-
-## Disclaimer
-
-Pokémon and related names and characters are the property of their respective owners. This is an independent educational project and is not affiliated with or endorsed by Nintendo, Game Freak, or The Pokémon Company.
+- Pokémon data is retrieved from [PokéAPI](https://pokeapi.co/).
+- Pokémon names and character artwork belong to their respective owners. This is an independent fan project and is not affiliated with or endorsed by Nintendo, Game Freak, or The Pokémon Company.
