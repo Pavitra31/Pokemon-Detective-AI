@@ -1,4 +1,4 @@
-
+import os
 from functools import lru_cache
 from pathlib import Path
 
@@ -10,7 +10,16 @@ from backend.services.vision_model import create_model
 from backend.services.color_service import extract_dominant_color
 
 
-MODEL_PATH = Path("models/pokemon_efficientnet_b0_1012_fulltrained.pth")
+MODEL_PATH = Path(
+    os.getenv(
+        "MODEL_PATH",
+        str(
+            Path(__file__).resolve().parents[2]
+            / "models"
+            / "pokemon_efficientnet_b0_1012_fulltrained.pth"
+        ),
+    )
+)
 DEVICE = torch.device("cpu")
 
 IMAGE_TRANSFORM = transforms.Compose([
