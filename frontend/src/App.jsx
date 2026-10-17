@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import PikachuDetective from './PikachuDetective'
 
-const API_URL = 'http://127.0.0.1:5000'
+const API_URL = (import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000').replace(/\/$/, '')
 const MAX_FILE_SIZE = 10 * 1024 * 1024
 const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
 

@@ -1,4 +1,4 @@
-
+import os
 from io import BytesIO
 from flask_cors import CORS
 from flask import Flask, jsonify, request
@@ -10,7 +10,18 @@ from backend.services.prediction_service import predict_pokemon
 
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
+
+allowed_origins = [
+    origin.strip()
+    for origin in os.getenv(
+        "CORS_ORIGINS",
+        "http://localhost:5173,http://127.0.0.1:5173",
+    ).split(",")
+    if origin.strip()
+]
+
+CORS(app, resources={r"/api/*": {"origins": allowed_origins}})
+
 
 # Limit uploaded images to 10 MB.
 app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024
@@ -99,4 +110,8 @@ def file_too_large(error):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(
+        host="0.0.0.0",
+        port=int(os.getenv("PORT", "5000")),
+        debug=os.getenv("FLASK_DEBUG", "false").lower() == "true",
+    )
