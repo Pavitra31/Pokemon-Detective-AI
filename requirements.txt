@@ -4,8 +4,9 @@ Flask-Cors
 requests
 Pillow
 python-dotenv
-torch
-torchvision
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.14.1+cpu
+torchvision==0.29.1+cpu
 scikit-learn
 pytest
 gunicorn
